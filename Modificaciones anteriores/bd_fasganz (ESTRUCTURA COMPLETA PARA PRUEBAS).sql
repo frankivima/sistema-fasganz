@@ -1,0 +1,625 @@
+-- phpMyAdmin SQL Dump
+-- version 5.2.0
+-- https://www.phpmyadmin.net/
+--
+-- Servidor: 127.0.0.1
+-- Tiempo de generación: 17-09-2024 a las 17:24:39
+-- Versión del servidor: 10.4.24-MariaDB
+-- Versión de PHP: 8.1.6
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Base de datos: `bd_fasganz`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `antecedentes_familiares`
+--
+
+CREATE TABLE `antecedentes_familiares` (
+  `id_paciente` int(11) NOT NULL,
+  `alergias` varchar(20) DEFAULT NULL,
+  `asma` varchar(20) DEFAULT NULL,
+  `tbc` varchar(20) DEFAULT NULL,
+  `cardiopatia` varchar(20) DEFAULT NULL,
+  `hipertension` varchar(20) DEFAULT NULL,
+  `varices` varchar(20) DEFAULT NULL,
+  `desnutricion` varchar(20) DEFAULT NULL,
+  `diabetes` varchar(20) DEFAULT NULL,
+  `obesidad` varchar(20) DEFAULT NULL,
+  `gastropatia` varchar(20) DEFAULT NULL,
+  `neurologico` varchar(20) DEFAULT NULL,
+  `enf_renal` varchar(20) DEFAULT NULL,
+  `cancer` varchar(20) DEFAULT NULL,
+  `alcohol` varchar(20) DEFAULT NULL,
+  `drogas` varchar(20) DEFAULT NULL,
+  `sifilis` varchar(20) DEFAULT NULL,
+  `sida` varchar(20) DEFAULT NULL,
+  `artritis` varchar(20) DEFAULT NULL,
+  `otros` varchar(20) DEFAULT NULL,
+  `padre_` varchar(20) DEFAULT NULL,
+  `madre_` varchar(20) DEFAULT NULL,
+  `hermanos_` varchar(20) DEFAULT NULL,
+  `otro_contacto` varchar(20) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `antecedentes_perinatales`
+--
+
+CREATE TABLE `antecedentes_perinatales` (
+  `id_paciente` int(20) NOT NULL,
+  `carnet_prenatal` varchar(20) DEFAULT NULL,
+  `patologia_embarazo` varchar(20) DEFAULT NULL,
+  `patologia_parto` varchar(20) DEFAULT NULL,
+  `patologia_puerperio` varchar(20) DEFAULT NULL,
+  `consultas_prenatal` varchar(20) DEFAULT NULL,
+  `semanas_gestacion` varchar(20) DEFAULT NULL,
+  `hrs_fuera_madre` varchar(20) DEFAULT NULL,
+  `madre` varchar(20) DEFAULT NULL,
+  `padre` varchar(20) DEFAULT NULL,
+  `hermanos` varchar(20) DEFAULT NULL,
+  `otros` varchar(20) DEFAULT NULL,
+  `forceps` varchar(20) DEFAULT NULL,
+  `cesarea` varchar(20) DEFAULT NULL,
+  `parto` varchar(20) DEFAULT NULL,
+  `peso_nacer` varchar(20) DEFAULT NULL,
+  `talla` varchar(20) DEFAULT NULL,
+  `circunferencia_cefalica` varchar(20) DEFAULT NULL,
+  `apgar_min` varchar(20) DEFAULT NULL,
+  `reanimacion` varchar(20) DEFAULT NULL,
+  `ingreso_rn` varchar(20) DEFAULT NULL,
+  `asfixia` varchar(20) DEFAULT NULL,
+  `patologias_rn` varchar(20) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `beneficiarios`
+--
+
+CREATE TABLE `beneficiarios` (
+  `id` int(11) NOT NULL,
+  `cedula_empleado` varchar(10) DEFAULT NULL,
+  `nombre` varchar(50) DEFAULT NULL,
+  `apellido` varchar(50) DEFAULT NULL,
+  `cedula_beneficiario` varchar(10) DEFAULT NULL,
+  `parentesco` varchar(20) DEFAULT NULL,
+  `fecha_nac` date DEFAULT NULL,
+  `edad` int(11) GENERATED ALWAYS AS (year(curdate()) - year(`fecha_nac`)) VIRTUAL,
+  `genero` varchar(1) NOT NULL,
+  `fecha_registro` datetime NOT NULL,
+  `encargado_registro` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `citas`
+--
+
+CREATE TABLE `citas` (
+  `id` int(11) NOT NULL,
+  `fecha` date DEFAULT NULL,
+  `cedula_paciente` varchar(14) DEFAULT NULL,
+  `tipo_paciente` varchar(20) NOT NULL,
+  `categoria` varchar(50) NOT NULL,
+  `num_historia` varchar(10) NOT NULL,
+  `genero` varchar(50) NOT NULL,
+  `fecha_nac` date NOT NULL,
+  `especialidad` varchar(50) NOT NULL,
+  `medico` varchar(50) NOT NULL,
+  `num_telefono` varchar(11) NOT NULL,
+  `estado` varchar(255) DEFAULT NULL,
+  `numero_turno` int(11) DEFAULT NULL,
+  `fecha_registro` datetime NOT NULL,
+  `encargado_registro` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `especialidades`
+--
+
+CREATE TABLE `especialidades` (
+  `id` int(11) NOT NULL,
+  `especialidad` varchar(25) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `especialidades`
+--
+
+INSERT INTO `especialidades` (`id`, `especialidad`) VALUES
+(1, 'Medicina Familiar'),
+(2, 'Pediatría'),
+(3, 'Cardiología ');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `historias_medicas`
+--
+
+CREATE TABLE `historias_medicas` (
+  `id` int(11) NOT NULL,
+  `cedula_titular` varchar(10) NOT NULL,
+  `apellido_familia` varchar(50) NOT NULL,
+  `num_historia_titular` varchar(20) DEFAULT NULL,
+  `id_paciente` int(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `historia_pacientes`
+--
+
+CREATE TABLE `historia_pacientes` (
+  `id_paciente` int(11) NOT NULL,
+  `nombres` varchar(60) NOT NULL,
+  `apellidos` varchar(60) NOT NULL,
+  `cedula_paciente` varchar(60) NOT NULL,
+  `genero` varchar(30) NOT NULL,
+  `fecha_nac` date NOT NULL,
+  `estado_civil` varchar(20) DEFAULT NULL,
+  `ocupacion` varchar(50) DEFAULT NULL,
+  `estudios` varchar(20) DEFAULT NULL,
+  `años_aprobados` int(11) DEFAULT NULL,
+  `analfabeta` varchar(20) DEFAULT NULL,
+  `lugar_nac` varchar(65) DEFAULT NULL,
+  `estado` varchar(65) DEFAULT NULL,
+  `pais` varchar(65) DEFAULT NULL,
+  `direccion` text DEFAULT NULL,
+  `num_telefono` varchar(12) DEFAULT NULL,
+  `religion` varchar(20) DEFAULT NULL,
+  `establecimiento` varchar(30) DEFAULT NULL,
+  `municipio` varchar(30) DEFAULT NULL,
+  `parroquia` varchar(30) DEFAULT NULL,
+  `comunidad` varchar(30) DEFAULT NULL,
+  `etnias` varchar(30) DEFAULT NULL,
+  `nom_madre` varchar(60) DEFAULT NULL,
+  `madre_ocupacion` varchar(60) DEFAULT NULL,
+  `nom_padre` varchar(60) DEFAULT NULL,
+  `padre_ocupacion` varchar(60) DEFAULT NULL,
+  `representante` varchar(60) DEFAULT NULL,
+  `nom_representante` varchar(60) DEFAULT NULL,
+  `cedula_representante` varchar(12) DEFAULT NULL,
+  `telefono_representante` varchar(12) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `medicos`
+--
+
+CREATE TABLE `medicos` (
+  `id` int(11) NOT NULL,
+  `cedula` varchar(12) DEFAULT NULL,
+  `nombre` varchar(20) DEFAULT NULL,
+  `apellido` varchar(20) DEFAULT NULL,
+  `especialidad` varchar(30) DEFAULT NULL,
+  `horario` varchar(10) DEFAULT NULL,
+  `telefono` varchar(14) DEFAULT NULL,
+  `email` varchar(30) DEFAULT NULL,
+  `direccion` varchar(50) DEFAULT NULL,
+  `fecha_nac` date DEFAULT NULL,
+  `edad` int(11) GENERATED ALWAYS AS (year(curdate()) - year(`fecha_nac`)) VIRTUAL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `pacientes`
+--
+
+CREATE TABLE `pacientes` (
+  `id` int(11) NOT NULL,
+  `cedula` varchar(10) NOT NULL,
+  `nombre` varchar(50) DEFAULT NULL,
+  `apellido` varchar(50) DEFAULT NULL,
+  `cargo` varchar(50) DEFAULT NULL,
+  `institucion` varchar(50) DEFAULT NULL,
+  `fecha_nac` date DEFAULT NULL,
+  `edad` int(11) GENERATED ALWAYS AS (year(curdate()) - year(`fecha_nac`)) VIRTUAL,
+  `genero` varchar(1) NOT NULL,
+  `fecha_ingreso` date DEFAULT NULL,
+  `años_servicio` int(11) GENERATED ALWAYS AS (year(curdate()) - year(`fecha_ingreso`)) VIRTUAL,
+  `fecha_registro` datetime NOT NULL,
+  `encargado_registro` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `pacientes`
+--
+
+INSERT INTO `pacientes` (`id`, `cedula`, `nombre`, `apellido`, `cargo`, `institucion`, `fecha_nac`, `genero`, `fecha_ingreso`, `fecha_registro`, `encargado_registro`) VALUES
+(97, '12915769', 'YAMILETH', 'RODRIGUEZ', 'CONTRATADO', 'DIRECCION-SEDE', '1900-01-01', 'F', '2016-04-01', '2024-09-05 10:40:36', 1),
+(98, '15154942', 'LUIS ALBERTO', 'SERRANO', 'CONTRATADO', 'DIRECCION-SEDE', '1900-01-02', 'F', '2016-06-01', '2024-09-05 10:40:36', 1),
+(99, '3673274', 'DOUGLAS', 'HERNANDEZ', 'TRABAJADOR SOCIAL IV.', 'DIRECCION-SEDE', '1900-01-03', 'M', '1999-03-13', '2024-09-05 10:40:36', 1),
+(100, '3956108', 'ANGEL RAFAEL', 'MORFFE FAJARDO', 'ADMINSTRADOR II ', 'DIRECCION-SEDE', '1900-01-04', 'M', '2003-01-16', '2024-09-05 10:40:37', 1),
+(101, '4009084', 'ALEXIS JOSE', 'HERNANDEZ MARTINEZ', 'INGENIERO MECANICO JEFE', 'DIRECCION-SEDE', '1900-01-05', 'M', '1999-04-16', '2024-09-05 10:40:37', 1),
+(102, '4496013', 'NELIDA', 'VALLENILLA', 'TRABAJADOR SOCIAL II', 'DIRECCION-SEDE', '1900-01-06', 'F', '2005-06-30', '2024-09-05 10:40:37', 1),
+(103, '4576592', 'FRANCISCO JAVIER', 'BARRIOS', 'OPERADOR DE EQUIPO DE COMPUTACION  IV', 'DIRECCION-SEDE', '1900-01-07', 'M', '2012-11-16', '2024-09-05 10:40:37', 1),
+(104, '4583371', 'ROSA', 'REGALADO', 'DOCENTE III - 40H', 'DIRECCION-SEDE', '1900-01-08', 'F', '2012-10-01', '2024-09-05 10:40:37', 1),
+(105, '4905907', 'DENNIS', 'BALZA RON', 'JEFE TECNICO ADMINISTRATIVO III', 'DIRECCION-SEDE', '1900-01-09', 'M', '2014-04-22', '2024-09-05 10:40:37', 1),
+(106, '5368925', 'PEDRO JOSE', 'RODRIGUEZ CHAVEZ', 'TECNICO AGROPECUARIO IV', 'DIRECCION-SEDE', '1900-01-10', 'M', '2004-01-01', '2024-09-05 10:40:37', 1),
+(107, '5490965', 'ANARKIS JOSEFINA', 'ALMERIDA C.', 'ABOGADO JEFE', 'DIRECCION-SEDE', '1900-01-11', 'F', '1996-03-15', '2024-09-05 10:40:37', 1),
+(108, '5891438', 'NANCY DEL VALLE', 'LOPEZ', 'ANALISTA DE PRESUPUESTO I', 'DIRECCION-SEDE', '1900-01-12', 'F', '2003-02-17', '2024-09-05 10:40:37', 1),
+(109, '6625311', 'MARGARITA', 'TREBOL', 'ABOGADO III', 'DIRECCION-SEDE', '1900-01-13', 'F', '2012-01-02', '2024-09-05 10:40:37', 1),
+(110, '8205422', 'VALENTIN', 'GUAICARA', 'ABOGADO I', 'DIRECCION-SEDE', '1900-01-14', 'M', '2018-05-15', '2024-09-05 10:40:37', 1),
+(111, '8216398', 'EDUARDO CESAR', 'CASTILLO ASTUDILLO', 'JEFE TECNICO ADMINISTRATIVO III', 'DIRECCION-SEDE', '1900-01-15', 'M', '2013-01-02', '2024-09-05 10:40:37', 1),
+(112, '8222382', 'BELKIS', 'SUARES', 'TRABAJADOR SOCIAL IV', 'DIRECCION-SEDE', '1900-01-16', 'F', '2016-01-04', '2024-09-05 10:40:37', 1),
+(113, '8230875', 'CARMEN', 'AMARICUA', 'ABOGADO I', 'DIRECCION-SEDE', '1900-01-17', 'F', '2018-11-01', '2024-09-05 10:40:37', 1),
+(114, '8234669', 'BELKIS', 'SABINO', 'ADMINISTRADOR IV', 'DIRECCION-SEDE', '1900-01-18', 'F', '1997-01-01', '2024-09-05 10:40:37', 1),
+(115, '8235325', 'CARMEN', 'AMARICUA', 'ADMINISTRADOR IV', 'DIRECCION-SEDE', '1900-01-19', 'F', '2007-01-02', '2024-09-05 10:40:37', 1),
+(116, '8236228', 'LUIS CARLOS', 'ROJAS', 'ANALISTA DE PERSONAL III', 'DIRECCION-SEDE', '1900-01-20', 'M', '2003-02-03', '2024-09-05 10:40:37', 1),
+(117, '8237238', 'LIBIA MARIA', 'TOMOCHE', 'ANALISTA DE PERSONAL IV', 'DIRECCION-SEDE', '1900-01-21', 'F', '2018-11-01', '2024-09-05 10:40:37', 1),
+(118, '8243712', 'LUIS RAMON', 'PAULO RIOS', 'TRABAJADOR SOCIAL II', 'DIRECCION-SEDE', '1900-01-22', 'M', '2005-06-30', '2024-09-05 10:40:37', 1),
+(119, '8249258', 'JOSE GREGORIO', 'COACUTO MACAYO', 'ASISTENTE ADMINISTRATIVO V', 'DIRECCION-SEDE', '1900-01-23', 'M', '2010-01-04', '2024-09-05 10:40:37', 1),
+(120, '8254400', 'CARMEN', 'MONGUA', 'DOCENTE III - 07H', 'DIRECCION-SEDE', '1900-01-24', 'F', '2004-06-16', '2024-09-05 10:40:37', 1),
+(121, '8255909', 'JULIO CESAR', 'CALDERON', 'JEFE TECNICO ADMINISTRATIVO III', 'DIRECCION-SEDE', '1900-01-25', 'M', '1995-04-01', '2024-09-05 10:40:37', 1),
+(122, '8260616', 'ANA MERCEDES', 'CHAGUAN', 'ANALISTA DE PERSONAL IV', 'DIRECCION-SEDE', '1900-01-26', 'F', '1996-06-01', '2024-09-05 10:40:37', 1),
+(123, '8262920', 'IVON JOSEFINA', 'GUAREGUA GUAICARA', 'ASISTENTE DE INGENIERIA I', 'DIRECCION-SEDE', '1900-01-27', 'F', '2003-10-01', '2024-09-05 10:40:37', 1),
+(124, '8263512', 'MARIA JOSE', 'HERNANDEZ ARRIOJA', 'SECRETARIO I', 'DIRECCION-SEDE', '1900-01-28', 'F', '2016-11-01', '2024-09-05 10:40:37', 1),
+(125, '8274165', 'GORKI', 'CARRASQUEL HERRERA', 'JEFE TECNICO ADMINISTRATIVO III', 'DIRECCION-SEDE', '1900-01-29', 'M', '2004-11-05', '2024-09-05 10:40:37', 1),
+(126, '8277804', 'DUBRASKA', 'LETTERNI', 'ANALISTA DE PERSONAL III', 'DIRECCION-SEDE', '1900-01-30', 'F', '2017-09-01', '2024-09-05 10:40:37', 1),
+(127, '8278495', 'JOHANA', 'MARTINEZ', 'ASISTENTE DE PROTOCOLO III', 'DIRECCION-SEDE', '1900-01-31', 'F', '2003-05-16', '2024-09-05 10:40:37', 1),
+(128, '8283720', 'HENRY RAFAEL', 'TAUCHE', 'JEFE ADMINISTRATIVO III', 'DIRECCION-SEDE', '1900-02-01', 'M', '1998-04-01', '2024-09-05 10:40:37', 1),
+(129, '8285432', 'EDGAR', 'R VARGAS', 'JEFE TECNICO ADMINISTRATIVO III', 'DIRECCION-SEDE', '1900-02-02', 'M', '1999-09-01', '2024-09-05 10:40:37', 1),
+(130, '8287065', 'VLADIMIR', 'LOPEZ', 'ANALISTA DE PERSONAL IV', 'DIRECCION-SEDE', '1900-02-03', 'M', '2006-04-03', '2024-09-05 10:40:37', 1),
+(131, '8288859', 'WILMEN RAMON', 'GARCIA MEDINA', 'ASISTENTE ADMINISTRATIVO II', 'DIRECCION-SEDE', '1900-02-04', 'M', '2006-01-02', '2024-09-05 10:40:37', 1),
+(132, '8290069', 'FELIX EDUARDO', 'TABEROA CASTRO', 'ABOGADO JEFE', 'DIRECCION-SEDE', '1900-02-05', 'M', '2016-11-01', '2024-09-05 10:40:37', 1),
+(133, '8292085', 'ALEXANDRA', 'ROJAS', 'JEFE TECNICO ADMINISTRATIVO III', 'DIRECCION-SEDE', '1900-02-06', 'F', '1998-11-16', '2024-09-05 10:40:37', 1),
+(134, '8293732', 'JHOSABETH', 'HERRERA MORENO', 'PROGRAMADOR IV', 'DIRECCION-SEDE', '1900-02-07', 'F', '2004-10-01', '2024-09-05 10:40:37', 1),
+(135, '8296102', 'SORELYS ESKIA', 'MAIZ RENGEL', 'ABOGADO IV', 'DIRECCION-SEDE', '1900-02-08', 'F', '2016-11-01', '2024-09-05 10:40:37', 1),
+(136, '8297612', 'ERIKA DEL CARMEN', 'BORGES TABARES', 'SECRETARIO EJECUTIVO II', 'DIRECCION-SEDE', '1900-02-09', 'F', '2004-06-15', '2024-09-05 10:40:37', 1),
+(137, '8297857', 'GREGORY', 'SUBERO', 'ABOGADO II', 'DIRECCION-SEDE', '1900-02-10', 'M', '2012-11-16', '2024-09-05 10:40:37', 1),
+(138, '8298043', 'YUSMERY', 'GOMEZ ALCALA', 'ADMINISTRADOR I', 'DIRECCION-SEDE', '1900-02-11', 'F', '2004-06-16', '2024-09-05 10:40:37', 1),
+(139, '8298143', 'ALEIDY JOSEFINA', 'MARTINEZ GARCIA', 'JEFE TECNICO ADMINISTRATIVO III', 'DIRECCION-SEDE', '1900-02-12', 'F', '2008-01-02', '2024-09-05 10:40:37', 1),
+(140, '8304794', 'JOSE LUIS', 'GARCIA SUCRE', 'JEFE TECNICO ADMINISTRATIVO III', 'DIRECCION-SEDE', '1900-02-13', 'M', '1995-08-01', '2024-09-05 10:40:37', 1),
+(141, '8311048', 'CARLOS', 'LUIS TORRES', 'TECNICO MECANICO II', 'DIRECCION-SEDE', '1900-02-14', 'M', '2002-01-01', '2024-09-05 10:40:37', 1),
+(142, '8324411', 'ANIBAL', 'HERNANDEZ MARTINEZ', 'JEFE TECNICO ADMINISTRATIVO III', 'DIRECCION-SEDE', '1900-02-15', 'M', '1995-07-16', '2024-09-05 10:40:37', 1),
+(143, '8329572', 'REINALDO RAMON', 'VELASQUEZ URDANETA', 'JEFE TECNICO ADMINISTRATIVO III', 'DIRECCION-SEDE', '1900-02-16', 'M', '2005-03-01', '2024-09-05 10:40:37', 1),
+(144, '8329895', 'JOSE', 'GREGORIO ACOSTA', 'JEFE TECNICO ADMINISTRATIVO III', 'DIRECCION-SEDE', '1900-02-17', 'M', '2007-01-02', '2024-09-05 10:40:37', 1),
+(145, '8782891', 'MANUEL', 'GONZALEZ', 'TOPOGRAFO JEFE', 'DIRECCION-SEDE', '1900-02-18', 'M', '2001-06-01', '2024-09-05 10:40:37', 1),
+(146, '8799706', 'SNEL', 'RENGIFO', 'TECNICO MECANICO V', 'DIRECCION-SEDE', '1900-02-19', 'M', '1996-01-02', '2024-09-05 10:40:37', 1),
+(147, '9095548', 'JOSE LUIS', 'MILLAN', 'ASISTENTE ADMINISTRATIVO III', 'DIRECCION-SEDE', '1900-02-20', 'F', '2006-10-02', '2024-09-05 10:40:37', 1),
+(148, '9434456', 'MILAGROS DEL CARMEN', 'CORREA GOMEZ', 'DOCENTE IV - 53,33H / DIRECTOR ', 'DIRECCION-SEDE', '1900-02-21', 'F', '2000-02-28', '2024-09-05 10:40:37', 1),
+(149, '9980665', 'YANELIS JOSEFINA', 'GONZALEZ', 'TRABAJADOR SOCIAL II', 'DIRECCION-SEDE', '1900-02-22', 'F', '2003-05-05', '2024-09-05 10:40:37', 1),
+(150, '10063493', 'VOLGA', 'ACOSTA', 'JEFE TECNICO ADMINISTRATIVO II', 'DIRECCION-SEDE', '1900-02-23', 'F', '2013-07-15', '2024-09-05 10:40:37', 1),
+(151, '10296182', 'NORMA', 'BORGES', 'ASISTENTE ADMINISTRATIVO V', 'DIRECCION-SEDE', '1900-02-24', 'F', '2012-12-01', '2024-09-05 10:40:37', 1),
+(152, '10922072', 'MOISES', 'PEREZ', 'ASISTENTE ADMINISTRATIVO IV', 'DIRECCION-SEDE', '1900-02-25', 'M', '2024-07-01', '2024-09-05 10:40:37', 1),
+(153, '10998835', 'MANUEL SALVADOR', 'PADILLA PEREZ', 'ASISTENTE ADMINISTRATIVO V', 'DIRECCION-SEDE', '1900-02-26', 'M', '2003-05-05', '2024-09-05 10:40:37', 1),
+(154, '11058534', 'IRNES', 'GONZALEZ', 'JEFE TECNICO ADMTVO I', 'DIRECCION-SEDE', '1900-02-27', 'F', '2008-07-01', '2024-09-05 10:40:37', 1),
+(155, '11423243', 'MARY CARMEN', 'HERNANDEZ QUIJADA', 'ASISTENTE ADMINISTRATIVO I', 'DIRECCION-SEDE', '1900-02-28', 'F', '2012-01-02', '2024-09-05 10:40:37', 1),
+(156, '11901305', 'ELIZABETH', 'CASTILLO POITO', 'ABOGADO II', 'DIRECCION-SEDE', '1900-02-28', 'F', '2012-12-03', '2024-09-05 10:40:37', 1),
+(157, '11901523', 'YELITZA', 'PARAGUAN', 'SECRETARIO EJECUTIVO II', 'DIRECCION-SEDE', '1900-03-01', 'F', '2001-02-05', '2024-09-05 10:40:37', 1),
+(158, '11902361', 'JOSE LUIS', 'RODRIGUEZ', 'JEFE TECNICO ADMINISTRATIVO III', 'DIRECCION-SEDE', '1900-03-02', 'M', '2000-01-01', '2024-09-05 10:40:37', 1),
+(159, '12013715', 'MARTHA', 'FRANCO', 'JEFE TECNICO ADMINISTRATIVO III', 'DIRECCION-SEDE', '1900-03-03', 'F', '1997-03-01', '2024-09-05 10:40:37', 1),
+(160, '12342460', 'PAOLA', 'JIMENEZ', 'JEFE TECNICO ADMINISTRATIVO III', 'DIRECCION-SEDE', '1900-03-04', 'F', '2010-01-04', '2024-09-05 10:40:37', 1),
+(161, '12400689', 'MARIA LENITZA', 'MACHADO OLIVO', 'ASISTENTE ADMINISTRATIVO III', 'DIRECCION-SEDE', '1900-03-05', 'F', '2012-12-01', '2024-09-05 10:40:37', 1),
+(162, '12574958', 'ROBINSOM', 'GUAIMARE', 'JEFE TECNICO ADMINISTRATIVO II', 'DIRECCION-SEDE', '1900-03-06', 'M', '1997-01-01', '2024-09-05 10:40:37', 1),
+(163, '12575879', 'MABEL DEL VALLE', 'RODRIGUEZ', 'SECRETARIO EJECUTIVO III', 'DIRECCION-SEDE', '1900-03-07', 'F', '2005-05-16', '2024-09-05 10:40:37', 1),
+(164, '12793215', 'ZULY', 'MOLINA', 'ASISTENTE ADMINISTRATIVO III', 'DIRECCION-SEDE', '1900-03-08', 'F', '2007-08-01', '2024-09-05 10:40:37', 1),
+(165, '12915549', 'MARXENGELS DEL VALLE', 'FRONTADO GUILARTE', 'JEFE TECNICO ADMINISTRATIVO II', 'DIRECCION-SEDE', '1900-03-09', 'F', '2005-09-01', '2024-09-05 10:40:37', 1),
+(166, '12979053', 'RONNY JOSE', 'MARAIMA DIAZ', 'FOTOGRAFO III', 'DIRECCION-SEDE', '1900-03-10', 'M', '2008-07-01', '2024-09-05 10:40:37', 1),
+(167, '13168434', 'JOSE GREGORIO', 'GUEVARA MILLAN', 'TRABAJADOR SOCIAL IV', 'DIRECCION-SEDE', '1900-03-11', 'M', '2007-01-02', '2024-09-05 10:40:37', 1),
+(168, '13368126', 'ANDREA CAROLINA', 'CUECHE', 'ABOGADO IV', 'DIRECCION-SEDE', '1900-03-12', 'F', '2005-09-19', '2024-09-05 10:40:37', 1),
+(169, '13369095', 'ALBIN DEL CARMEN', 'CABRERA VARGAS', 'ANALISTA DE PERSONAL I', 'DIRECCION-SEDE', '1900-03-13', 'F', '2012-12-01', '2024-09-05 10:40:37', 1),
+(170, '13369747', 'MILDRED DEL VALLE', 'VELASQUEZ ROJAS', 'ASISTENTE ADMINSTRATIVO IV ', 'DIRECCION-SEDE', '1900-03-14', 'F', '2012-11-16', '2024-09-05 10:40:37', 1),
+(171, '13565377', 'ALFREDO ERNESTO', 'CALMA', 'SECRETARIO EJECUTIVO II', 'DIRECCION-SEDE', '1900-03-15', 'M', '2017-02-13', '2024-09-05 10:40:37', 1),
+(172, '13710368', 'MARIELA JOSEFINA ', 'MEJIAS DE', 'ANALISTA DE PRESUPUESTO II', 'DIRECCION-SEDE', '1900-03-16', 'F', '2021-09-15', '2024-09-05 10:40:37', 1),
+(173, '13766538', 'RAMON', 'BLANCO', 'JEFE TECNICO ADMINISTRATIVO III', 'DIRECCION-SEDE', '1900-03-17', 'M', '2015-06-01', '2024-09-05 10:40:37', 1),
+(174, '13784642', 'LIBIA', 'VILLARROEL', 'ASISTENTE ADMINISTRATIVO V', 'DIRECCION-SEDE', '1900-03-18', 'F', '2005-04-16', '2024-09-05 10:40:37', 1),
+(175, '14076545', 'YULVINIA', 'PEREZ', 'ASISTENTE ADMINISTRATIVO III', 'DIRECCION-SEDE', '1900-03-19', 'F', '2017-10-16', '2024-09-05 10:40:37', 1),
+(176, '14101056', 'GLAHOMAR DEL VALLE', 'CARRERA', 'ABOGADO III', 'DIRECCION-SEDE', '1900-03-20', 'F', '2004-11-16', '2024-09-05 10:40:37', 1),
+(177, '14213537', 'YADIT PAULINA', 'MORALES ROJAS', 'ASISTENTE ADMINISTRATIVO III', 'DIRECCION-SEDE', '1900-03-21', 'F', '2017-09-01', '2024-09-05 10:40:37', 1),
+(178, '14213824', 'BISMAR JOSE', 'HERNANDEZ', 'ASISTENTE ADMINISTRATIVO V', 'DIRECCION-SEDE', '1900-03-22', 'M', '2005-03-02', '2024-09-05 10:40:37', 1),
+(179, '14431900', 'ANDREINA', 'TOVAR', 'ASISTENTE ADMINISTRATIVO IV', 'DIRECCION-SEDE', '1900-03-23', 'F', '2019-10-01', '2024-09-05 10:40:37', 1),
+(180, '14476403', 'YOLIVER', 'MARCANO', 'ASISTENTE ADMINISTRATIVO IV', 'DIRECCION-SEDE', '1900-03-24', 'F', '2008-07-01', '2024-09-05 10:40:37', 1),
+(181, '14548397', 'ALEXANDER', 'MARCANO', 'ASISTENTE DE OFICINA I', 'DIRECCION-SEDE', '1900-03-25', 'M', '2006-08-01', '2024-09-05 10:40:37', 1),
+(182, '14633263', 'BETTY CAROLINA', 'VILLARROEL LOPEZ', 'ANALISTA DE PERSONAL IV', 'DIRECCION-SEDE', '1900-03-26', 'F', '2006-10-02', '2024-09-05 10:40:37', 1),
+(183, '14764435', 'MIRELIS', 'SILVA', 'INGENIERO CIVIL III', 'DIRECCION-SEDE', '1900-03-27', 'F', '2005-07-15', '2024-09-05 10:40:37', 1),
+(184, '14828639', 'ROSIBEL ADELINA', 'URBANO CAMPOS', 'ADMINISTRADOR III', 'DIRECCION-SEDE', '1900-03-28', 'F', '2008-01-02', '2024-09-05 10:40:37', 1),
+(185, '14870013', 'MAUREEN', 'ESTHER PIMENTEL', 'ANALISTA DE PERSONAL IV', 'DIRECCION-SEDE', '1900-03-29', 'F', '2010-01-04', '2024-09-05 10:40:37', 1),
+(186, '15050587', 'GLENIS', 'TRILLO', 'ANALISTA CENTRAL DE PERSONAL', 'DIRECCION-SEDE', '1900-03-30', 'F', '2004-01-01', '2024-09-05 10:40:37', 1),
+(187, '15155157', 'BELITZA ISIDRA', 'BRACHO PEREZ', 'ASISTENTE ADMINISTRATIVO III', 'DIRECCION-SEDE', '1900-03-31', 'F', '2021-01-04', '2024-09-05 10:40:37', 1),
+(188, '15192495', 'LUIS', 'MOTA', 'ASISTENTE ADMINISTRATIVO IV', 'DIRECCION-SEDE', '1900-04-01', 'M', '2008-08-16', '2024-09-05 10:40:37', 1),
+(189, '15279058', 'EDUARDO DEL VALLE', 'SIFONTES', 'TRABAJADOR SOCIAL I', 'DIRECCION-SEDE', '1900-04-02', 'M', '2012-11-01', '2024-09-05 10:40:37', 1),
+(190, '15292569', 'RIGOBERTO C.', 'GALINDO MILLAN', 'JEFE TECNICO ADMINISTRATIVO II', 'DIRECCION-SEDE', '1900-04-03', 'M', '2003-05-05', '2024-09-05 10:40:37', 1),
+(191, '15554135', 'JOSE RAFAEL', 'QUIJADA', 'JEFE TECNICO ADMINISTRATIVO II', 'DIRECCION-SEDE', '1900-04-04', 'M', '2007-01-02', '2024-09-05 10:40:37', 1),
+(192, '15677899', 'YAMILETH JOSEFINA', 'YASELLI CAPABLO', 'CONTADOR III', 'DIRECCION-SEDE', '1900-04-05', 'F', '2003-05-05', '2024-09-05 10:40:37', 1),
+(193, '15878811', 'ELEIDYS LILIANA', 'SANCHEZ CABELLO', 'ASISTENTE ADMINISTRATIVO III', 'DIRECCION-SEDE', '1900-04-06', 'F', '2012-01-02', '2024-09-05 10:40:37', 1),
+(194, '16028381', 'YACKSON', 'ARAGUACHE', 'TRABAJADOR SOCIAL III', 'DIRECCION-SEDE', '1900-04-07', 'M', '2007-01-02', '2024-09-05 10:40:37', 1),
+(195, '16055152', 'ALEXANDER', 'VELASQUEZ', 'ANALISTA DE PRESUPUESTO II', 'DIRECCION-SEDE', '1900-04-08', 'M', '2012-11-16', '2024-09-05 10:40:37', 1),
+(196, '16067392', 'ENMANUEL', 'MATUTE', 'JEFE TECNICO ADMINISTRATIVO II', 'DIRECCION-SEDE', '1900-04-09', 'M', '2011-01-03', '2024-09-05 10:40:37', 1),
+(197, '16252410', 'MARIA', 'G. ZERPA', 'SECRETARIO EJECUTIVO III', 'DIRECCION-SEDE', '1900-04-10', 'F', '2007-01-02', '2024-09-05 10:40:37', 1),
+(198, '16252484', 'JUAN CARLOS', 'MARQUEZ', 'ADMINISTRADOR III', 'DIRECCION-SEDE', '1900-04-11', 'M', '2014-01-01', '2024-09-05 10:40:37', 1),
+(199, '16697902', 'LUIS ANTONIO', 'SALAZAR', 'PROMOTOR CULTURAL II', 'DIRECCION-SEDE', '1900-04-12', 'M', '2012-11-16', '2024-09-05 10:40:37', 1),
+(200, '16718777', 'ANA KARINA', 'LOPEZ', 'SECRETARIO I', 'DIRECCION-SEDE', '1900-04-13', 'F', '2013-04-22', '2024-09-05 10:40:37', 1),
+(201, '16797417', 'MARYORIS', 'SARMIENTO', 'ANALISTA DE PERSONAL II', 'DIRECCION-SEDE', '1900-04-14', 'F', '2023-10-02', '2024-09-05 10:40:37', 1),
+(202, '16926918', 'MARILIN ANDREINA', 'YAGUARACUTO', 'OPERADOR DE EQUIPOS COMPUTACION IV', 'DIRECCION-SEDE', '1900-04-15', 'F', '2012-01-02', '2024-09-05 10:40:37', 1),
+(203, '17164257', 'MARIA ANTONIETA', 'CASTILLO HIDALGO', 'ABOGADO III', 'DIRECCION-SEDE', '1900-04-16', 'F', '2007-01-02', '2024-09-05 10:40:37', 1),
+(204, '17360771', 'YUDIMAR', 'BRITO HERRERA', 'ASISTENTE ADMINISTRATIVO I', 'DIRECCION-SEDE', '1900-04-17', 'F', '2018-11-01', '2024-09-05 10:40:37', 1),
+(205, '17731533', 'WENDY', 'BARRIOS', 'CONTADOR I', 'DIRECCION-SEDE', '1900-04-18', 'F', '2016-01-04', '2024-09-05 10:40:37', 1),
+(206, '17731840', 'TAMARA', 'HERNANDEZ', 'ASISTENTE ADMIISTRATIVO I', 'DIRECCION-SEDE', '1900-04-19', 'F', '2017-10-16', '2024-09-05 10:40:37', 1),
+(207, '17900764', 'GUILLERMO', 'MORILLO', 'ASISTENTE ADMIISTRATIVO III', 'DIRECCION-SEDE', '1900-04-20', 'M', '2017-10-16', '2024-09-05 10:40:37', 1),
+(208, '18127815', 'YUSMARY', 'CARMONA BOLIVAR', 'ANALISTA DE PRESUPUESTO I', 'DIRECCION-SEDE', '1900-04-21', 'F', '2017-10-16', '2024-09-05 10:40:37', 1),
+(209, '18369317', 'DANIEL', 'SILVA', 'JEFE TECNICO ADMINISTRATIVO I ', 'DIRECCION-SEDE', '1900-04-22', 'F', '2004-08-02', '2024-09-05 10:40:37', 1),
+(210, '18510057', 'BORIS', 'VELASQUEZ SOTILLO', 'ANALISTA DE PERSONAL', 'DIRECCION-SEDE', '1900-04-23', 'M', '2017-10-16', '2024-09-05 10:40:37', 1),
+(211, '18511211', 'SAULIMAR DEL CARMEN', 'MARTINEZ LOPEZ', 'JEFE TECNICO ADMINISTRATIVO II', 'DIRECCION-SEDE', '1900-04-24', 'F', '2006-11-10', '2024-09-05 10:40:37', 1),
+(212, '18512811', 'KARINA', 'GUERRA', 'CONTADOR II', 'DIRECCION-SEDE', '1900-04-25', 'F', '2017-09-01', '2024-09-05 10:40:37', 1),
+(213, '18765581', 'JESUS', 'HERRERA', 'OPERADOR DE EQUIPO DE COMPUTACION IV', 'DIRECCION-SEDE', '1900-04-26', 'M', '2015-03-31', '2024-09-05 10:40:37', 1),
+(214, '19012690', 'GERALDINE', 'FILIPO AGUILAR', 'ASISTENTE ADMINISTRATIVO I', 'DIRECCION-SEDE', '1900-04-27', 'F', '2017-10-16', '2024-09-05 10:40:37', 1),
+(215, '19183715', 'ASDRUBAL LEONARDO', 'MARTINEZ ARREAZA', 'ASISTENTE ADMINISTRATIVO III', 'DIRECCION-SEDE', '1900-04-28', 'M', '2007-01-02', '2024-09-05 10:40:37', 1),
+(216, '19316264', 'OSWALDO CELESTINO', 'ALVARADO CARRILLO', 'ABOGADO I', 'DIRECCION-SEDE', '1900-04-29', 'M', '2011-04-01', '2024-09-05 10:40:37', 1),
+(217, '19674003', 'HELEOBEC CELESTINO', 'CURBATA', 'ASISTENTE ADMINISTRATIVO III', 'DIRECCION-SEDE', '1900-04-30', 'M', '2017-10-16', '2024-09-05 10:40:37', 1),
+(218, '19841638', 'YNAGA', 'PATRICIA', 'ADMINISTRADOR JEFE', 'DIRECCION-SEDE', '1900-05-01', 'F', '2008-11-16', '2024-09-05 10:40:37', 1),
+(219, '20342991', 'ALICIA', 'CACERES PEDRIQUE', 'ASISTENTE ADMINISTRATIVO III', 'DIRECCION-SEDE', '1900-05-02', 'F', '2017-10-16', '2024-09-05 10:40:37', 1),
+(220, '20359917', 'OREANA', 'YARUNI LEDEZMA', 'ABOGADO III', 'DIRECCION-SEDE', '1900-05-03', 'F', '2017-07-03', '2024-09-05 10:40:37', 1),
+(221, '21172089', 'YANETCY', 'PEREIRA TOCUYO', 'ANALISTA DE PERSONAL VI', 'DIRECCION-SEDE', '1900-05-04', 'F', '2012-01-01', '2024-09-05 10:40:37', 1),
+(222, '21389265', 'DEIVIS JOSE', 'ACACIO GUARARIMA', 'ASISTENTE ADMINISTRATIVO IV', 'DIRECCION-SEDE', '1900-05-05', 'M', '2014-01-01', '2024-09-05 10:40:37', 1),
+(223, '22570215', 'LUIS', 'ROSAL', 'ASISTENTE ADMINISTRATIVO II', 'DIRECCION-SEDE', '1900-05-06', 'M', '2017-10-16', '2024-09-05 10:40:37', 1),
+(224, '24447726', 'JESUS ALBERTO', 'RODRIGUEZ MARTINEZ', 'ASISTENTE ADMINISTRATIVO', 'DIRECCION-SEDE', '1900-05-07', 'M', '2017-09-01', '2024-09-05 10:40:37', 1),
+(225, '24827984', 'IZARETH MARIA', 'BASTARDO GUEVARA', 'ASISTENTE ADMINISTRATIVO IV', 'DIRECCION-SEDE', '1900-05-08', 'F', '2021-03-01', '2024-09-05 10:40:37', 1),
+(226, '26257741', 'BERLIN KAROLINA', 'MAICAN MARINO', 'COORD. DE TECNOL E INFORM DEL ARCHIVO GENERAL', 'DIRECCION-SEDE', '1900-05-09', 'F', '2023-01-01', '2024-09-05 10:40:37', 1),
+(227, '27505102', 'JOSE', 'GUILARTE', 'ASISTENTE ADMINISTRATIVO I', 'DIRECCION-SEDE', '1900-05-10', 'M', '2018-11-01', '2024-09-05 10:40:37', 1),
+(228, '3668006', 'JORGE ANTONIO', 'VALLENILLA', 'OBRERO', 'DIRECCION-SEDE', '1900-05-11', 'M', '2005-03-04', '2024-09-05 10:40:37', 1),
+(229, '4253441', 'CARLOS', 'MEZA', 'OBRERO', 'DIRECCION-SEDE', '1900-05-12', 'M', '2002-01-01', '2024-09-05 10:40:37', 1),
+(230, '4829299', 'JOSE VICENTE', 'MENESES MARTINEZ', 'SUPERVISOR DE MANTENIMIENTO', 'DIRECCION-SEDE', '1900-05-13', 'M', '2012-10-01', '2024-09-05 10:40:37', 1),
+(231, '5183627', 'FRANCISCO', 'RODRIGUEZ', 'SUPERVISOR DE MANTENIMIENTO', 'DIRECCION-SEDE', '1900-05-14', 'M', '1999-04-06', '2024-09-05 10:40:37', 1),
+(232, '6940360', 'BENITO', 'GONZALEZ', 'SUPERVISOR DE MANTENIMIENTO', 'DIRECCION-SEDE', '1900-05-15', 'M', '2005-04-25', '2024-09-05 10:40:37', 1),
+(233, '8105440', 'MARISOL', 'ROSALES', 'OBRERO', 'DIRECCION-SEDE', '1900-05-16', 'F', '2017-10-16', '2024-09-05 10:40:37', 1),
+(234, '8209222', 'MARTIN', 'AGUILERA', 'OBRERO', 'DIRECCION-SEDE', '1900-05-17', 'M', '2022-02-01', '2024-09-05 10:40:37', 1),
+(235, '8260430', 'CARLOS', 'LEZAMA', 'SUPERVISOR DE MANTENIMIENTO', 'DIRECCION-SEDE', '1900-05-18', 'M', '1997-03-01', '2024-09-05 10:40:37', 1),
+(236, '8395850', 'KENELA', 'SALAZAR', 'SUPERVISOR DE MANTENIMIENTO', 'DIRECCION-SEDE', '1900-05-19', 'F', '2003-01-01', '2024-09-05 10:40:37', 1),
+(237, '8801549', 'ZULEIMA', 'BOLIVAR', 'OBRERO', 'DIRECCION-SEDE', '1900-05-20', 'F', '2014-06-02', '2024-09-05 10:40:37', 1),
+(238, '9060240', 'JOSE', 'FAJARDO', 'OBRERO', 'DIRECCION-SEDE', '1900-05-21', 'M', '2023-10-30', '2024-09-05 10:40:37', 1),
+(239, '10290614', 'MAZA', 'JUAN', 'VIGILANTE', 'DIRECCION-SEDE', '1900-05-22', 'M', '2024-04-15', '2024-09-05 10:40:37', 1),
+(240, '10292687', 'NORQUI', 'VILLAHERMOSA', 'OBRERO', 'DIRECCION-SEDE', '1900-05-23', 'F', '2004-06-15', '2024-09-05 10:40:37', 1),
+(241, '10667791', 'LISBETH', 'REBOLLEDO', 'OBRERO', 'DIRECCION-SEDE', '1900-05-24', 'F', '2007-01-02', '2024-09-05 10:40:37', 1),
+(242, '12261720', 'RICARDO RAMON', 'ROJAS RONDON', 'SUPERVISOR DE MANTENIMIENTO', 'DIRECCION-SEDE', '1900-05-25', 'M', '2007-12-06', '2024-09-05 10:40:37', 1),
+(243, '13736396', 'EFRAIN JOSE', 'MORILLO GAMBOA', 'OBRERO', 'DIRECCION-SEDE', '1900-05-26', 'M', '2017-09-01', '2024-09-05 10:40:37', 1),
+(244, '14468629', 'JOHANA', 'QUIJADA', 'OBRERO', 'DIRECCION-SEDE', '1900-05-27', 'F', '2016-10-03', '2024-09-05 10:40:37', 1),
+(245, '15201926', 'ISAAC ANTONIO', 'GOMEZ PADOVANI', 'OBRERO', 'DIRECCION-SEDE', '1900-05-28', 'M', '2012-06-20', '2024-09-05 10:40:37', 1),
+(246, '15677013', 'EMIL', 'VELASQUEZ', 'SUPERVISOR DE MANTENIMIENTO', 'DIRECCION-SEDE', '1900-05-29', 'M', '2012-11-01', '2024-09-05 10:40:37', 1),
+(247, '15679630', 'GABRIEL', 'SIFONTES', 'SUPERVISOR DE MANTENIMIENTO', 'DIRECCION-SEDE', '1900-05-30', 'M', '1999-12-16', '2024-09-05 10:40:37', 1),
+(248, '16799021', 'LUIS RAFAEL', 'MAITA', 'SUPERVISOR DE MANTENIMIENTO', 'DIRECCION-SEDE', '1900-05-31', 'M', '2012-12-21', '2024-09-05 10:40:37', 1),
+(249, '17221175', 'RAUL JOSE', 'MALPA', 'SUPERVISOR DE MANTENIMIENTO', 'DIRECCION-SEDE', '1900-06-01', 'M', '2007-01-02', '2024-09-05 10:40:37', 1),
+(250, '19169323', 'SOULCIREE', 'AGUILARTE', 'OBRERO', 'DIRECCION-SEDE', '1900-06-02', 'F', '2017-10-16', '2024-09-05 10:40:37', 1),
+(251, '19316380', 'JOSE GREGORIO', 'BAUTE ROJAS', 'OBRERO', 'DIRECCION-SEDE', '1900-06-03', 'M', '2014-07-01', '2024-09-05 10:40:37', 1),
+(252, '19651975', 'CRUZ MANUEL', 'BLANCO', 'OBRERO', 'DIRECCION-SEDE', '1900-06-04', 'M', '2011-01-03', '2024-09-05 10:40:37', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `registros_consultas`
+--
+
+CREATE TABLE `registros_consultas` (
+  `id` int(11) NOT NULL,
+  `id_paciente` int(11) NOT NULL,
+  `fecha_consulta` date NOT NULL,
+  `motivo_consulta` text NOT NULL,
+  `diagnostico` text NOT NULL,
+  `fecha_registro` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `roles`
+--
+
+CREATE TABLE `roles` (
+  `id` int(11) NOT NULL,
+  `rol` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `roles`
+--
+
+INSERT INTO `roles` (`id`, `rol`) VALUES
+(1, 'Administrador'),
+(2, 'Recepción'),
+(3, 'Historias Medicas');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `usuarios`
+--
+
+CREATE TABLE `usuarios` (
+  `id` int(11) NOT NULL,
+  `nombre` varchar(50) NOT NULL,
+  `apellido` varchar(50) NOT NULL,
+  `username` varchar(50) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `id_rol` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `usuarios`
+--
+
+INSERT INTO `usuarios` (`id`, `nombre`, `apellido`, `username`, `password`, `id_rol`) VALUES
+(1, 'Administrador', '', 'administrador', 'admin', 1),
+(6, 'Atención al ', 'Usuario', 'recepcion', '123', 2),
+(7, 'Registros', 'Médicos', 'historias', '123', 3);
+
+--
+-- Índices para tablas volcadas
+--
+
+--
+-- Indices de la tabla `beneficiarios`
+--
+ALTER TABLE `beneficiarios`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `cedula_empleado` (`cedula_empleado`),
+  ADD KEY `cedula_beneficiario` (`cedula_beneficiario`) USING BTREE;
+
+--
+-- Indices de la tabla `citas`
+--
+ALTER TABLE `citas`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `especialidades`
+--
+ALTER TABLE `especialidades`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `historias_medicas`
+--
+ALTER TABLE `historias_medicas`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `id_paciente` (`id_paciente`);
+
+--
+-- Indices de la tabla `historia_pacientes`
+--
+ALTER TABLE `historia_pacientes`
+  ADD PRIMARY KEY (`id_paciente`),
+  ADD UNIQUE KEY `cedula_paciente` (`cedula_paciente`);
+
+--
+-- Indices de la tabla `medicos`
+--
+ALTER TABLE `medicos`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `pacientes`
+--
+ALTER TABLE `pacientes`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `id` (`id`),
+  ADD UNIQUE KEY `cedula` (`cedula`),
+  ADD UNIQUE KEY `id_2` (`id`);
+
+--
+-- Indices de la tabla `registros_consultas`
+--
+ALTER TABLE `registros_consultas`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `roles`
+--
+ALTER TABLE `roles`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `usuarios`
+--
+ALTER TABLE `usuarios`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `username` (`username`),
+  ADD KEY `id_rol` (`id_rol`);
+
+--
+-- AUTO_INCREMENT de las tablas volcadas
+--
+
+--
+-- AUTO_INCREMENT de la tabla `beneficiarios`
+--
+ALTER TABLE `beneficiarios`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `citas`
+--
+ALTER TABLE `citas`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `especialidades`
+--
+ALTER TABLE `especialidades`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT de la tabla `historias_medicas`
+--
+ALTER TABLE `historias_medicas`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `historia_pacientes`
+--
+ALTER TABLE `historia_pacientes`
+  MODIFY `id_paciente` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `medicos`
+--
+ALTER TABLE `medicos`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `pacientes`
+--
+ALTER TABLE `pacientes`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=253;
+
+--
+-- AUTO_INCREMENT de la tabla `registros_consultas`
+--
+ALTER TABLE `registros_consultas`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `roles`
+--
+ALTER TABLE `roles`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT de la tabla `usuarios`
+--
+ALTER TABLE `usuarios`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- Restricciones para tablas volcadas
+--
+
+--
+-- Filtros para la tabla `beneficiarios`
+--
+ALTER TABLE `beneficiarios`
+  ADD CONSTRAINT `fk_beneficiarios_pacientes` FOREIGN KEY (`cedula_empleado`) REFERENCES `pacientes` (`cedula`) ON DELETE CASCADE;
+
+--
+-- Filtros para la tabla `usuarios`
+--
+ALTER TABLE `usuarios`
+  ADD CONSTRAINT `fk_usuarios_roles` FOREIGN KEY (`id_rol`) REFERENCES `roles` (`id`);
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

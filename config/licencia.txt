@@ -1,0 +1,2 @@
+Cadena encriptada: vneLZHA2Th1XvB+40DAyKQ==
+Vector de inicialización (IV): U62hTLxeTd5Lvw3foTk1oQ==
